@@ -26,7 +26,8 @@ void loop() {
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
   while(Serial.available()==0){
-    }
+    lcd.clear();  
+  }
   read = Serial.readString();
   lcd.print(read);
   lcd.setCursor(0, 0);
