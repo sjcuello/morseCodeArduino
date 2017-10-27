@@ -1,15 +1,24 @@
 String prueba = "hola";
 String result;
+//salida raya
+int led6 = 6;
+//salida punto
+int led7 = 7;
+
 void setup() {
-  // put your setup code here, to run once:
+  pinMode(led6, OUTPUT);
+  pinMode(led7, OUTPUT);
   Serial.begin(9600);
   result = decoder(prueba);
+  for(int i=0;i<result.length();i++){
+    player(result.charAt(i));
+  }
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
   Serial.println(result);
 }
+
 //param: the string read from the keyboard.
 //pre: true
 //pos: a string containing the decoded message in Morse code.
@@ -104,25 +113,33 @@ String matchLetters(char current){
   return "ERROR!";
 }
 
-//
-//
-//
+//param: an already decoded string.
+//pre: true.
+//pos: reproduces all the encoded message.
 void interpreter(String s){
   for(int i=0;i<s.length();i++){
-    
+    player(result.charAt(i));
   }
 }
 
-//
-//
-//
+//param: evaluates the current character in morse code.
+//pre: true.
+//pos: performs an action for a particular character.
 void player(char current){
   switch(current){
     case '-':
-    break;
+      digitalWrite(led6, HIGH);
+      delay(1000);
+      digitalWrite(led6, LOW);
+      break;
     case '.':
-    break;
+      digitalWrite(led7, HIGH);
+      delay(350);
+      digitalWrite(led7, LOW);
+      break;
     default:
+      delay(3000);
     break;
   }
+  delay(1000);
 }
