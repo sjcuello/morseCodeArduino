@@ -23,45 +23,50 @@ void setup() {
   lcd.begin(16, 2);
   // Print a message to the LCD.
   Serial.begin(9600);
-  
-  
+
 }
 
 void loop() {
   // set the cursor to column 0, line 1
   // (note: line 1 is the second row, since counting begins with 0):
-  while(Serial.available()==0){
-    lcd.clear();  
+  while (Serial.available() == 0) {
+    lcd.clear();
   }
   read = Serial.readString();
   lcd.print(read);
+
   inputDecod = decoder(read);
-  for(int i=0;i<inputDecod.length();i++){
+  for (int i = 0; i < inputDecod.length(); i++) {
+    if (i >= 16) {
+      //empty();
+      lcd.setCursor(i, 1);
+      lcd.scrollDisplayLeft();
+      
+    } else {
+      lcd.setCursor(i, 1);
+    }
+    lcd.print(inputDecod.charAt(i));
     player(inputDecod.charAt(i));
   }
-  /*
-  lcd.print(read);
-  lcd.setCursor(0, 0);    
-  */
 }
 
 
 //param: the string read from the keyboard.
 //pre: true
 //pos: a string containing the decoded message in Morse code.
-String decoder(String s){
-    String res = "";
-    for(int i=0;i<s.length();i++){
-      res = res + matchLetters(s.charAt(i));
-    }
-    return res;
+String decoder(String s) {
+  String res = "";
+  for (int i = 0; i < s.length(); i++) {
+    res = res + matchLetters(s.charAt(i));
+  }
+  return res;
 }
 
 //param: the character current in the string to decode.
 //pre: true
 //pos: a string with the code corresponding to the letter.
-String matchLetters(char current){
-  switch(current){
+String matchLetters(char current) {
+  switch (current) {
     case 'a':
       return ".-";
     case 'b':
@@ -136,6 +141,8 @@ String matchLetters(char current){
       return "---..";
     case '9':
       return "----.";
+    case ' ':
+      return " ";
   }
   return "ERROR!";
 }
@@ -143,8 +150,8 @@ String matchLetters(char current){
 //param: an already decoded string.
 //pre: true.
 //pos: reproduces all the encoded message.
-void interpreter(String s){
-  for(int i=0;i<s.length();i++){
+void interpreter(String s) {
+  for (int i = 0; i < s.length(); i++) {
     player(s.charAt(i));
   }
 }
@@ -152,8 +159,8 @@ void interpreter(String s){
 //param: evaluates the current character in morse code.
 //pre: true.
 //pos: performs an action for a particular character.
-void player(char current){
-  switch(current){
+void player(char current) {
+  switch (current) {
     case '-':
       digitalWrite(led6, HIGH);
       delay(1000);
@@ -166,7 +173,13 @@ void player(char current){
       break;
     default:
       delay(3000);
-    break;
+      break;
   }
   delay(1000);
+}
+
+void empty() {
+  lcd.setCursor(0, 2);
+  lcd.print("                ");
+  lcd.setCursor(0, 2);
 }
