@@ -6,13 +6,13 @@
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 
-//salida raya
+//The red led characterizes a stripe.
 int led6 = 6;
-//salida punto
+//The blue led characterizes a dot. 
 int led7 = 7;
-//variable para almacenar la entrada
+//Variable to store the entry.
 String read;
-//variable auxiliar para entrada decodificada
+//Auxiliary variable for decoded input.
 String inputDecod;
 
 
@@ -32,18 +32,17 @@ void loop() {
   while (Serial.available() == 0) {
     lcd.clear();
   }
+  //Read from serial port monitor.
   read = Serial.readString();
+  //Print in serial port monitor.
   lcd.print(read);
-
+  //Decode the string.
   inputDecod = decoder(read);
+  //Prints the decoded characters on the screen.
   for (int i = 0; i < inputDecod.length(); i++) {
+    lcd.setCursor(i, 1);
     if (i >= 16) {
-      //empty();
-      lcd.setCursor(i, 1);
-      lcd.scrollDisplayLeft();
-      
-    } else {
-      lcd.setCursor(i, 1);
+      lcd.scrollDisplayLeft(); 
     }
     lcd.print(inputDecod.charAt(i));
     player(inputDecod.charAt(i));
