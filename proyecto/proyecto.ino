@@ -21,7 +21,6 @@ void setup() {
   pinMode(led6, OUTPUT);
   pinMode(led7, OUTPUT);
   lcd.begin(16, 2);
-  // Print a message to the LCD.
   Serial.begin(9600);
 
 }
@@ -39,14 +38,7 @@ void loop() {
   //Decode the string.
   inputDecod = decoder(read);
   //Prints the decoded characters on the screen.
-  for (int i = 0; i < inputDecod.length(); i++) {
-    lcd.setCursor(i, 1);
-    if (i >= 16) {
-      lcd.scrollDisplayLeft(); 
-    }
-    lcd.print(inputDecod.charAt(i));
-    player(inputDecod.charAt(i));
-  }
+  interpreter(inputDecod);
 }
 
 
@@ -151,6 +143,11 @@ String matchLetters(char current) {
 //pos: reproduces all the encoded message.
 void interpreter(String s) {
   for (int i = 0; i < s.length(); i++) {
+    lcd.setCursor(i, 1);
+    if (i >= 16) {
+      lcd.scrollDisplayLeft(); 
+    }
+    lcd.print(s.charAt(i));
     player(s.charAt(i));
   }
 }
@@ -171,10 +168,12 @@ void player(char current) {
       digitalWrite(led7, LOW);
       break;
     default:
+      //If the character is a space.
       delay(3000);
       break;
   }
-  delay(1000);
+  //Corresponds to the time between characters.
+  delay(400);
 }
 
 void empty() {
