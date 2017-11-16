@@ -46,6 +46,8 @@ void loop() {
 //pre: true
 //pos: a string containing the decoded message in Morse code.
 String decoder(String s) {
+  s.toLowerCase();
+  Serial.println(s);
   String res = "";
   for (int i = 0; i < s.length(); i++) {
     res = res + matchLetters(s.charAt(i));
